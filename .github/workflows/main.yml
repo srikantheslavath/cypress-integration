@@ -1,37 +1,23 @@
-name: Cypress Tests with Amplify
+name: Deploy to AWS Amplify
 
 on:
   push:
     branches:
-      - master  # adjust this to your branch name
+      - master # Adjust the branch name as needed
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
+      - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Use Node.js 14.x
-        uses: actions/setup-node@v2
-        with:
-          node-version: 14.x
+      - name: Install Amplify CLI
+        run: npm install -g @aws-amplify/cli
 
-      # Install dependencies
-      - name: Install Dependencies
-        run: npm install
+      - name: Configure AWS Credentials
+        run: amplify configure --username AKIA2UC3BHXIRTB47X5U --secret LPsJcWKbLBp2RKn+ofsxmJM6uFkhOqTw7AGkGtRj
 
-      # Run Cypress tests
-      - name: Run Cypress Tests
-        run: npm run test # adjust the script name as per your project
-
-      # Add steps to integrate with Amplify GraphQL API tests
-      # You might need to configure Amplify CLI and credentials if not done already
-
-      # Run Amplify GraphQL API tests using Cypress
-      # You may need to set up environment variables for Amplify credentials and API endpoint
-
-      # Example:
-      # - name: Run Amplify GraphQL API Tests
-      #   run: npm run amplify:test
+      - name: Deploy to Amplify
+        run: amplify publish
